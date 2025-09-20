@@ -1,8 +1,10 @@
+package com.example;
+
 import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
+import com.drew.imaging.ImageProcessingException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

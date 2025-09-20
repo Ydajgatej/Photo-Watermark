@@ -43,7 +43,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>PhotoWatermarkApp</mainClass>
+                            <mainClass>com.example.PhotoWatermarkApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
