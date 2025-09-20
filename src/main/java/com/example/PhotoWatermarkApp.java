@@ -40,16 +40,24 @@ public class PhotoWatermarkApp {
         // 1. 获取用户输入的图片文件路径
         System.out.println("请输入图片文件路径：");
         String inputPath = scanner.nextLine().trim();
-        File inputDir = new File(inputPath);
+        File inputFile = new File(inputPath);
         
-        if (!inputDir.exists()) {
+        if (!inputFile.exists()) {
             System.out.println("错误：路径不存在！");
             return;
         }
         
         // 2. 创建输出目录
-        String outputDirName = inputDir.getName() + "_watermark";
-        File outputDir = new File(inputDir.getParent(), outputDirName);
+        File outputDir;
+        if (inputFile.isDirectory()) {
+            // 如果是目录，创建同名_watermark目录
+            String outputDirName = inputFile.getName() + "_watermark";
+            outputDir = new File(inputFile.getParent(), outputDirName);
+        } else {
+            // 如果是文件，在同级目录创建_watermark目录
+            outputDir = new File(inputFile.getParent(), "watermark");
+        }
+        
         if (!outputDir.exists() && !outputDir.mkdirs()) {
             System.out.println("错误：无法创建输出目录！");
             return;
@@ -69,7 +77,18 @@ public class PhotoWatermarkApp {
         Position position = getPositionByName(positionStr, Position.BOTTOM_RIGHT);
         
         // 4. 处理图片
-        processImages(inputDir, outputDir, fontSize, fontColor, position);
+        if (inputFile.isDirectory()) {
+            processImages(inputFile, outputDir, fontSize, fontColor, position);
+        } else {
+            // 处理单个文件
+            try {
+                addWatermark(inputFile, outputDir, fontSize, fontColor, position);
+                System.out.println("已处理：" + inputFile.getName());
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "处理文件失败：" + inputFile.getName(), e);
+                System.out.println("错误：处理文件失败：" + inputFile.getName() + "，原因：" + e.getMessage());
+            }
+        }
         
         System.out.println("所有图片处理完成！\n处理后的图片保存在：" + outputDir.getAbsolutePath());
         scanner.close();
