@@ -183,11 +183,26 @@ public class PhotoWatermarkApp {
     }
     
     private static Color getColorByName(String colorName, Color defaultColor) {
-        try {
-            return Color.valueOf(colorName);
-        } catch (IllegalArgumentException e) {
-            System.out.println("无效的颜色值，使用默认颜色。");
+        if (colorName == null || colorName.isEmpty()) {
             return defaultColor;
+        }
+        
+        switch (colorName.toUpperCase()) {
+            case "BLACK":
+                return Color.BLACK;
+            case "WHITE":
+                return Color.WHITE;
+            case "RED":
+                return Color.RED;
+            case "GREEN":
+                return Color.GREEN;
+            case "BLUE":
+                return Color.BLUE;
+            case "YELLOW":
+                return Color.YELLOW;
+            default:
+                System.out.println("无效的颜色值，使用默认颜色。");
+                return defaultColor;
         }
     }
     
